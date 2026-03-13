@@ -1,0 +1,285 @@
+{
+  "info": {
+    "_postman_id": "b2c3d4e5-0002-4000-8000-000000000001",
+    "name": "microservice-casing-design",
+    "description": "AkerBP Casing Design microservice (Quarkus/Java). Provides loads, scenario, PPFG, charts, and lithology data for the Casing Design Workbench.\n\nAuth: Bearer token via Authorization header (set `authToken` in your environment).\n\nBase URL variable: `{{casingDesignBaseUrl}}`\n- Localhost: http://localhost:8080\n- Tiger/Pre-prod: https://<cluster>/services/abp-quarkus-de-microservice-casing-design",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "Loads",
+      "item": [
+        {
+          "name": "GET Standard Loads",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/api/v1/loads/standardLoads/{{wellId}}/{{wellboreId}}/{{designId}}/{{holeSectionId}}",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["api", "v1", "loads", "standardLoads", "{{wellId}}", "{{wellboreId}}", "{{designId}}", "{{holeSectionId}}"]
+            },
+            "description": "Retrieve standard load data for a hole section. Returns all available load profiles and all pre-defined combinations (load scenarios) including burst, collapse, and axial load cards."
+          }
+        },
+        {
+          "name": "POST Standard Loads (Update)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"burstLoadCards\": [],\n  \"collapseLoadCards\": [],\n  \"loadProfiles\": [\n    {\n      \"id\": \"profile-id\",\n      \"name\": \"Load Profile Name\"\n    }\n  ],\n  \"temperatureProfiles\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/api/v1/loads/standardLoads/{{wellId}}/{{wellboreId}}/{{designId}}/{{holeSectionId}}",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["api", "v1", "loads", "standardLoads", "{{wellId}}", "{{wellboreId}}", "{{designId}}", "{{holeSectionId}}"]
+            },
+            "description": "Updates the provided load profiles for a hole section. Load profiles absent from the request will remain unchanged. Accepts optional arrays for burstLoadCards, collapseLoadCards, loadProfiles, and temperatureProfiles."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Scenario",
+      "item": [
+        {
+          "name": "GET Designs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/api/v1/scenario/wells/{{wellId}}/wellbores/{{wellboreId}}/designs",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["api", "v1", "scenario", "wells", "{{wellId}}", "wellbores", "{{wellboreId}}", "designs"]
+            },
+            "description": "Get list of designs for a specific well and wellbore. Returns id, name, and datumId for each design."
+          }
+        },
+        {
+          "name": "GET Designs With Details",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/api/v1/scenario/wells/{{wellId}}/wellbores/{{wellboreId}}/designsWithDetails",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["api", "v1", "scenario", "wells", "{{wellId}}", "wellbores", "{{wellboreId}}", "designsWithDetails"]
+            },
+            "description": "Get designs with additional details including phase and measured depth (md). Returns id, name, datumId, phase, and md."
+          }
+        }
+      ]
+    },
+    {
+      "name": "PPFG",
+      "item": [
+        {
+          "name": "GET Has Pore Pressure",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/api/v1/ppfg/wells/{{wellId}}/wellbores/{{wellboreId}}/designs/{{designId}}/has-pore-pressure",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["api", "v1", "ppfg", "wells", "{{wellId}}", "wellbores", "{{wellboreId}}", "designs", "{{designId}}", "has-pore-pressure"]
+            },
+            "description": "Check if pore pressure data is available for a design. Returns { hasPorePressure: boolean }."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Charts",
+      "item": [
+        {
+          "name": "GET Chart Data",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/api/v1/charts/{{reportId}}/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["api", "v1", "charts", "{{reportId}}", "{{wellId}}", "{{wellboreId}}", "{{designId}}"],
+              "query": [
+                {
+                  "key": "tracks",
+                  "value": "holeSections,trajectory,formations,lithology,ppfg,temperature",
+                  "description": "Comma-separated list of track types to include. Options: holeSections, trajectory, formations, lithology, ppfg, temperature",
+                  "disabled": true
+                },
+                {
+                  "key": "depthType",
+                  "value": "md",
+                  "description": "Depth type: md (default) or tvd",
+                  "disabled": true
+                },
+                {
+                  "key": "depthUnit",
+                  "value": "ft",
+                  "description": "Depth unit: ft (default) or m",
+                  "disabled": true
+                },
+                {
+                  "key": "pressureUnit",
+                  "value": "ppg",
+                  "description": "Pressure unit: ppg (default) or sg",
+                  "disabled": true
+                },
+                {
+                  "key": "temperatureUnit",
+                  "value": "F",
+                  "description": "Temperature unit: F (default) or C",
+                  "disabled": true
+                }
+              ]
+            },
+            "description": "Collects data for chart tracks: hole sections, trajectory, formations, lithology, pore pressure/fracture gradient, and temperature. The reportId is the supplementary curves report. Optional query params control which tracks and units to include."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lithology",
+      "item": [
+        {
+          "name": "GET Formations",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/api/v1/lithology/wells/{{wellId}}/wellbores/{{wellboreId}}/designs/{{designId}}/formations",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["api", "v1", "lithology", "wells", "{{wellId}}", "wellbores", "{{wellboreId}}", "designs", "{{designId}}", "formations"]
+            },
+            "description": "Get lithology formation data for a specific well, wellbore, and design."
+          }
+        }
+      ]
+    },
+    {
+      "name": "User",
+      "item": [
+        {
+          "name": "GET Current User",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/me",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["me"]
+            },
+            "description": "Get information about the currently authenticated user. Returns { username: string } where username is the Keycloak principal name. Requires authentication."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "GET App Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/msp/home/",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["msp", "home", ""]
+            },
+            "description": "Get application metadata: title, description, name, version, author, health check path, statistics path, and health info."
+          }
+        },
+        {
+          "name": "GET Health Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/msp/home/health",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["msp", "home", "health"]
+            },
+            "description": "Check microservice health status. Returns health status name: OK, FAILING, or UNKNOWN."
+          }
+        },
+        {
+          "name": "GET Readiness",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/msp/home/readiness",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["msp", "home", "readiness"]
+            },
+            "description": "Check if the microservice is ready to accept requests. Returns HTTP 200 when ready."
+          }
+        },
+        {
+          "name": "GET Code Coverage",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/msp/home/codecoverage",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["msp", "home", "codecoverage"]
+            },
+            "description": "Get Maven artifact coordinates (GroupId:ArtifactId)."
+          }
+        },
+        {
+          "name": "GET Build Info",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "auth": {
+              "type": "noauth"
+            },
+            "url": {
+              "raw": "{{casingDesignBaseUrl}}/msp/home/build",
+              "host": ["{{casingDesignBaseUrl}}"],
+              "path": ["msp", "home", "build"]
+            },
+            "description": "Get build information. Returns { appVersion: string }."
+          }
+        }
+      ]
+    }
+  ]
+}

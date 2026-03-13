@@ -1,0 +1,368 @@
+{
+  "info": {
+    "_postman_id": "b2c3d4e5-0002-4000-8000-000000000002",
+    "name": "microservice-akerbp-cbd",
+    "description": "AkerBP Critical Barrier Depth (CBD) microservice (Hapi.js/Node.js via nodemsp). Provides SOI (Stress of Interest), gas lift, casing, PPFGSH (pore pressure / fracture gradient / horizontal stress), riser margin, and revision data.\n\nAuth: Bearer token via `Authorization` header on each request (set `authToken` in your environment).\n\nBase URL variable: `{{cbdBaseUrl}}`\n- Localhost: http://localhost:8080/msp\n- Tiger/Pre-prod: https://<cluster>/services/microservice-akerbp-cbd/msp\n\nNote: nodemsp wraps all routes under the /msp prefix, which is already included in {{cbdBaseUrl}}.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "SOI",
+      "item": [
+        {
+          "name": "GET SOI Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/soi/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["soi", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch SOI (Stress of Interest) input data for a given well, wellbore, and design."
+          }
+        },
+        {
+          "name": "GET SOI List by Well",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/soi/list/{{wellId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["soi", "list", "{{wellId}}"]
+            },
+            "description": "List all available SOIs for a specific wellId. Used to populate the import selection UI."
+          }
+        },
+        {
+          "name": "POST Import SOIs",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sois\": [\n    \"soi-id-1\",\n    \"soi-id-2\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cbdBaseUrl}}/soi/import",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["soi", "import"]
+            },
+            "description": "Import specific SOIs by ID. Body: { sois: string[] } — array of SOI IDs (min 1 required)."
+          }
+        },
+        {
+          "name": "POST Save SOI Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sois\": [\n    {\n      \"id\": \"soi-id-1\",\n      \"name\": \"SOI Name\",\n      \"tvd\": 1000.0,\n      \"soiPressureOverride\": null,\n      \"soiBottom\": null,\n      \"hasBubblePoint\": false,\n      \"enabled\": true,\n      \"fluidDensity\": 1.03\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cbdBaseUrl}}/soi/save/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["soi", "save", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Sync SOI data with the database for the given well/wellbore/design.\n\nSoiObject fields:\n- id (required): SOI ID\n- name (required): SOI name\n- tvd (required): True vertical depth\n- soiPressureOverride (nullable): Pressure override\n- soiBottom (nullable): SOI bottom depth\n- hasBubblePoint (required): Has bubble point flag\n- enabled (required): Enabled flag\n- fluidDensity (required when hasBubblePoint=false)\n- oilGradient, gasGradient, bubblePointPressure (required when hasBubblePoint=true)"
+          }
+        },
+        {
+          "name": "DELETE SOI Data",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/soi/delete/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["soi", "delete", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Delete SOI data for the specified well, wellbore, and design combination."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Gas Lift",
+      "item": [
+        {
+          "name": "GET Gas Lift Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/gaslift/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["gaslift", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch gas lift input data for a given well, wellbore, and design."
+          }
+        },
+        {
+          "name": "GET Gas Lift List by Well",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/gaslift/list/{{wellId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["gaslift", "list", "{{wellId}}"]
+            },
+            "description": "List all gas lifts for a specific wellId. Used to populate the import selection UI."
+          }
+        },
+        {
+          "name": "POST Import Gas Lifts",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gasLifts\": [\n    \"gas-lift-id-1\",\n    \"gas-lift-id-2\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cbdBaseUrl}}/gaslift/import",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["gaslift", "import"]
+            },
+            "description": "Import specific gas lifts by ID. Body: { gasLifts: string[] } — array of Gas Lift IDs (min 1 required)."
+          }
+        }
+      ]
+    },
+    {
+      "name": "CBD",
+      "item": [
+        {
+          "name": "POST Save CBD Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sois\": [\n    {\n      \"id\": \"soi-id-1\",\n      \"name\": \"SOI Name\",\n      \"tvd\": 1000.0,\n      \"soiPressureOverride\": null,\n      \"soiBottom\": null,\n      \"hasBubblePoint\": false,\n      \"enabled\": true,\n      \"fluidDensity\": 1.03\n    }\n  ],\n  \"gasLifts\": [\n    {\n      \"id\": \"gaslift-id-1\",\n      \"name\": \"Gas Lift Name\",\n      \"fluidDensity\": 0.85,\n      \"injectionPressure\": 250.0,\n      \"enabled\": true\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{cbdBaseUrl}}/cbd/save/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["cbd", "save", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Sync CBD (Critical Barrier Depth) data with the database — saves both SOI and gas lift arrays in a single call.\n\nGasLiftObject fields:\n- id (required)\n- name (required)\n- fluidDensity (required)\n- injectionPressure (required)\n- enabled (required)"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PPFGSH",
+      "item": [
+        {
+          "name": "GET Pressure / Fracture / Stress Curves",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/ppfgsh/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["ppfgsh", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch and compose pore pressure (PP), fracture gradient (FG), and horizontal stress (SH) curves from EDM. Returns active revision information alongside the curve data.\n\nNote: wellId and wellboreId are validated as 10-char strings; designId as 5-char string."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Casings",
+      "item": [
+        {
+          "name": "GET Casings Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/casings/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["casings", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch casings data for the given well/wellbore/design. Returns an array of Casing objects with properties, MD/TVD values, and casing details.\n\nNote: wellId and wellboreId are validated as 10-char strings; designId as 5-char string."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Riser Margin",
+      "item": [
+        {
+          "name": "GET Riser Margin Data",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/riser-margin/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["riser-margin", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch data for the riser-margin plugin including trajectory points and water depth.\n\nNote: wellId and wellboreId are validated as 10-char strings; designId as 5-char string."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Revisions",
+      "item": [
+        {
+          "name": "GET Active Revision Names",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/revisions/names/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["revisions", "names", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch available revision names for different curve types (pore pressure, fracture gradient, horizontal stress). Used to populate the revision selector UI.\n\nNote: wellId and wellboreId are validated as 10-char strings; designId as 5-char string."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pore Pressure",
+      "item": [
+        {
+          "name": "GET Pore Pressure for Revision",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{authToken}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{cbdBaseUrl}}/pp/revision/{{revisionId}}",
+              "host": ["{{cbdBaseUrl}}"],
+              "path": ["pp", "revision", "{{revisionId}}"]
+            },
+            "description": "Fetch pore pressure data for a specific revision. Returns revision data including curve points and metadata. Use the GET Active Revision Names endpoint to find available revisionIds."
+          }
+        }
+      ]
+    }
+  ]
+}
