@@ -1,22 +1,30 @@
-# Use this workspace to collaborate
 workspace:
-  id: 65a5b835-77ae-4360-9efe-321ff7c66084
-
+  id: cc45f3e0-ffe1-45d3-8b2b-12563b2c90b0
 localResources:
   collections:
     - ../collections/microservice-akerbp-cbd.postman_collection.json
     - ../collections/microservice-casing-design.postman_collection.json
     - ../environments/Untitled-1.json
+    - ../postman/collections/microservice-akerbp-cbd
+    - ../postman/collections/New Collection
   environments:
     - ../environments/akerbp-localhost.postman_environment.json
     - ../environments/akerbp-preprod.postman_environment.json
     - ../environments/akerbp-tiger.postman_environment.json
-
-# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
-
+    - ../postman/environments/AkerBP - Pre-prod.environment.yaml
+    - ../postman/environments/AkerBP - Localhost.environment.yaml
+    - ../postman/environments/AkerBP - Prod.environment.yaml
 cloudResources:
   collections:
-    ../postman/collections/microservice-akerbp-cbd: 52134964-33934338-2e68-4e27-8d56-12c8a93484e3
+    ../postman/collections/microservice-akerbp-cbd: 52134964-be25bad3-a743-4786-ab85-ce57272f19c9
+    ../collections/microservice-akerbp-cbd.postman_collection.json: 52134964-b2c3d4e5-0002-4000-8000-000000000002
+    ../collections/microservice-casing-design.postman_collection.json: 52134964-b2c3d4e5-0002-4000-8000-000000000001
+    ../environments/Untitled-1.json: 52134964-a1b2c3d4-e5f6-7890-abcd-ef1234567890
+    ../postman/collections/New Collection: 52134964-e54d30f0-2ff1-4b4e-9245-0ab725a1b064
   environments:
-    ../postman/environments/AkerBP - Pre-prod.environment.yaml: 52134964-5c86697b-e943-4b18-97a2-5d82dfa7888e
-    ../postman/environments/AkerBP - Localhost.environment.yaml: 52134964-ab82f97f-5b0f-45c0-80f2-0a18fec346ab
+    ../postman/environments/AkerBP - Pre-prod.environment.yaml: 52134964-e04deb5d-2158-46f6-ac63-f2b839dc6acb
+    ../postman/environments/AkerBP - Localhost.environment.yaml: 52134964-bb16b0fd-15df-4f9a-bafe-3108f8743028
+    ../environments/akerbp-localhost.postman_environment.json: 52134964-a1b2c3d4-0001-4000-8000-000000000001
+    ../environments/akerbp-preprod.postman_environment.json: 52134964-a1b2c3d4-0001-4000-8000-000000000003
+    ../environments/akerbp-tiger.postman_environment.json: 52134964-a1b2c3d4-0001-4000-8000-000000000002
+    ../postman/environments/AkerBP - Prod.environment.yaml: 52134964-1b016be9-3c26-4936-93f9-5cb0786517fd
