@@ -22,71 +22,70 @@ description: >-
 
 
 scripts:
-  - listen: prerequest
-    script:
-      exec:
-        - "// Auto-refresh authToken using the DWP Automation Test User (LastPass: \"DWP Automation Test User\")."
-        - "// Set dsisUsername/dsisPassword/keycloakBaseUrl in the environment to enable this; otherwise"
-        - "// this just warns and lets the request proceed (it'll 401 naturally on an expired token)."
-        - "// grant_type=password + client_id=dsis-console is a real, already-used pattern against this"
-        - "// Keycloak realm (see dwp-db-utility/dsis/index.js getToken()), not invented for this collection."
-        - ""
-        - "function decodeJwtExpiryMs(token) {"
-        - "    try {"
-        - "        const raw = token.replace(/^Bearer\\s+/i, '');"
-        - "        const payload = JSON.parse(atob(raw.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));"
-        - "        return payload.exp * 1000;"
-        - "    } catch (e) {"
-        - "        return null;"
-        - "    }"
-        - "}"
-        - ""
-        - "const currentToken = pm.environment.get('authToken');"
-        - "const expiryMs = currentToken ? decodeJwtExpiryMs(currentToken) : null;"
-        - "const REFRESH_MARGIN_MS = 30 * 1000;"
-        - "const needsRefresh = !expiryMs || expiryMs < Date.now() + REFRESH_MARGIN_MS;"
-        - ""
-        - "if (!needsRefresh) {"
-        - "    return;"
-        - "}"
-        - ""
-        - "const username = pm.environment.get('dsisUsername');"
-        - "const password = pm.environment.get('dsisPassword');"
-        - "const keycloakBaseUrl = pm.environment.get('keycloakBaseUrl');"
-        - "const clientId = pm.environment.get('keycloakClientId') || 'dsis-console';"
-        - ""
-        - "if (!username || !password || !keycloakBaseUrl) {"
-        - "    console.warn("
-        - "        'authToken is missing or expired, and dsisUsername/dsisPassword/keycloakBaseUrl are not set. ' +"
-        - "        'Set them (Automation Test User creds from LastPass) to enable auto-refresh, or paste a fresh ' +"
-        - "        'token into authToken manually. Request will proceed and likely 401.'"
-        - "    );"
-        - "    return;"
-        - "}"
-        - ""
-        - "pm.sendRequest({"
-        - "    url: `${keycloakBaseUrl}/realms/DecisionSpace_Integration_Server/protocol/openid-connect/token`,"
-        - "    method: 'POST',"
-        - "    header: { 'Content-Type': 'application/x-www-form-urlencoded' },"
-        - "    body: {"
-        - "        mode: 'urlencoded',"
-        - "        urlencoded: ["
-        - "            { key: 'grant_type', value: 'password' },"
-        - "            { key: 'client_id', value: clientId },"
-        - "            { key: 'username', value: username },"
-        - "            { key: 'password', value: password },"
-        - "        ],"
-        - "    },"
-        - "}, (err, res) => {"
-        - "    if (err) {"
-        - "        console.error('Token refresh request failed:', err);"
-        - "        return;"
-        - "    }"
-        - "    if (res.code !== 200) {"
-        - "        console.error('Token refresh failed:', res.code, res.json());"
-        - "        return;"
-        - "    }"
-        - "    const body = res.json();"
-        - "    pm.environment.set('authToken', body.access_token);"
-        - "    console.log('authToken refreshed, expires in', body.expires_in, 's');"
-        - "});"
+  - type: prerequest
+    code: |
+      // Auto-refresh authToken using the DWP Automation Test User (LastPass: "DWP Automation Test User").
+      // Set dsisUsername/dsisPassword/keycloakBaseUrl in the environment to enable this; otherwise
+      // this just warns and lets the request proceed (it'll 401 naturally on an expired token).
+      // grant_type=password + client_id=dsis-console is a real, already-used pattern against this
+      // Keycloak realm (see dwp-db-utility/dsis/index.js getToken()), not invented for this collection.
+
+      function decodeJwtExpiryMs(token) {
+          try {
+              const raw = token.replace(/^Bearer\s+/i, '');
+              const payload = JSON.parse(atob(raw.split('.')[1].replace(/-/g, '+').replace(/_/g, '/')));
+              return payload.exp * 1000;
+          } catch (e) {
+              return null;
+          }
+      }
+
+      const currentToken = pm.environment.get('authToken');
+      const expiryMs = currentToken ? decodeJwtExpiryMs(currentToken) : null;
+      const REFRESH_MARGIN_MS = 30 * 1000;
+      const needsRefresh = !expiryMs || expiryMs < Date.now() + REFRESH_MARGIN_MS;
+
+      if (!needsRefresh) {
+          return;
+      }
+
+      const username = pm.environment.get('dsisUsername');
+      const password = pm.environment.get('dsisPassword');
+      const keycloakBaseUrl = pm.environment.get('keycloakBaseUrl');
+      const clientId = pm.environment.get('keycloakClientId') || 'dsis-console';
+
+      if (!username || !password || !keycloakBaseUrl) {
+          console.warn(
+              'authToken is missing or expired, and dsisUsername/dsisPassword/keycloakBaseUrl are not set. ' +
+              'Set them (Automation Test User creds from LastPass) to enable auto-refresh, or paste a fresh ' +
+              'token into authToken manually. Request will proceed and likely 401.'
+          );
+          return;
+      }
+
+      pm.sendRequest({
+          url: `${keycloakBaseUrl}/realms/DecisionSpace_Integration_Server/protocol/openid-connect/token`,
+          method: 'POST',
+          header: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: {
+              mode: 'urlencoded',
+              urlencoded: [
+                  { key: 'grant_type', value: 'password' },
+                  { key: 'client_id', value: clientId },
+                  { key: 'username', value: username },
+                  { key: 'password', value: password },
+              ],
+          },
+      }, (err, res) => {
+          if (err) {
+              console.error('Token refresh request failed:', err);
+              return;
+          }
+          if (res.code !== 200) {
+              console.error('Token refresh failed:', res.code, res.json());
+              return;
+          }
+          const body = res.json();
+          pm.environment.set('authToken', body.access_token);
+          console.log('authToken refreshed, expires in', body.expires_in, 's');
+      });
