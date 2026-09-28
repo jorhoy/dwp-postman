@@ -1,0 +1,431 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "microservice-akerbp-cbd",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "description": "Base URL for the CBD microservice"
+    },
+    {
+      "key": "authToken",
+      "value": "",
+      "description": "Bearer token from Keycloak"
+    },
+    {
+      "key": "wellId",
+      "value": "4rE5MYZh4V",
+      "description": "Well ID (10 chars)"
+    },
+    {
+      "key": "wellboreId",
+      "value": "SeXOOUxlsW",
+      "description": "Wellbore ID (10 chars)"
+    },
+    {
+      "key": "designId",
+      "value": "XjRxk",
+      "description": "Design ID (5 chars)"
+    }
+  ],
+  "item": [
+    {
+      "name": "SOI",
+      "item": [
+        {
+          "name": "Get SOIs",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/soi/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["soi", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch all SOI entries for a given well/wellbore/design"
+          },
+          "response": []
+        },
+        {
+          "name": "Save SOIs",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sois\": [\n    {\n      \"id\": \"new-1\",\n      \"name\": \"SOI_1000m\",\n      \"tvd\": 1000,\n      \"soiPressureOverride\": null,\n      \"hasBubblePoint\": false,\n      \"fluidDensity\": 0.85,\n      \"oilGradient\": null,\n      \"gasGradient\": null,\n      \"bubblePointPressure\": null,\n      \"enabled\": true\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/soi/save/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["soi", "save", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Create, update or delete SOIs to sync with the provided list"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete SOIs",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/soi/delete/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["soi", "delete", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Delete all SOIs for a given well/wellbore/design"
+          },
+          "response": []
+        },
+        {
+          "name": "List SOIs by well",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/soi/list/{{wellId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["soi", "list", "{{wellId}}"]
+            },
+            "description": "List unique SOIs across all designs for a well"
+          },
+          "response": []
+        },
+        {
+          "name": "Import SOIs by IDs",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sois\": [\n    \"550e8400-e29b-41d4-a716-446655440000\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/soi/import",
+              "host": ["{{baseUrl}}"],
+              "path": ["soi", "import"]
+            },
+            "description": "Fetch specific SOIs by their IDs"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Riser Margin",
+      "item": [
+        {
+          "name": "Get Riser Margin (EDM + Overrides)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/riser-margin/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["riser-margin", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch EDM riser margin data (casings, pp, fg, trajectory) combined with any saved local overrides. Returns { edm, overrides, casingsOutOfSync }."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Riser Margin Overrides",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"seaWater\": 8.59576713661,\n  \"riserMarginSafetyFactor\": 0,\n  \"casings\": [\n    {\n      \"assemblyId\": \"ABC123\",\n      \"tvdAssemblyBase\": 1500,\n      \"mdAssemblyBase\": 1520,\n      \"mudDensityShoe\": 1.35,\n      \"enabled\": true\n    }\n  ],\n  \"previousCasings\": [\n    {\n      \"assemblyId\": \"ABC123\",\n      \"tvdAssemblyBase\": 1500,\n      \"mdAssemblyBase\": 1520,\n      \"mudDensityShoe\": 1.35,\n      \"enabled\": true\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/riser-margin/save/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["riser-margin", "save", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Upsert local overrides for the riser margin plugin. previousCasings should be the EDM casings at save time (used for drift detection on next load)."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Riser Margin Overrides",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/riser-margin/delete/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["riser-margin", "delete", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Delete saved overrides for this well/wellbore/design. The plugin will fall back to pure EDM values on next load."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Well Schematic Data",
+      "item": [
+        {
+          "name": "Get Persisted Schematic State",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/well-schematic-data/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["well-schematic-data", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch the persisted well schematic state. Returns the full state blob (stateData as JSON string) or null if no data exists."
+          },
+          "response": []
+        },
+        {
+          "name": "Save Schematic State",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stateData\": \"{\\\"version\\\":1,\\\"savedAt\\\":\\\"\\\",\\\"customLabels\\\":[],\\\"shapes\\\":[],\\\"sidetracks\\\":[],\\\"sidetrackOffsets\\\":[],\\\"tableRowEdits\\\":[],\\\"soiRowEdits\\\":[],\\\"labelOffsets\\\":[],\\\"showFormations\\\":true,\\\"selectedLabelTypes\\\":[\\\"section\\\",\\\"shoe\\\"],\\\"viewMode\\\":\\\"schematic\\\",\\\"depthExtension\\\":\\\"\\\"}\",\n  \"version\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/well-schematic-data/save/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["well-schematic-data", "save", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Upsert the full schematic state. stateData is a JSON-stringified SchematicLocalState blob. version is the schema version number."
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Schematic State",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/well-schematic-data/delete/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["well-schematic-data", "delete", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Delete the persisted schematic state for this well/wellbore/design. The plugin will reload from EDM defaults."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Gas Lift",
+      "item": [
+        {
+          "name": "Get Gas Lifts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gaslift/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["gaslift", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch gas lift input data"
+          },
+          "response": []
+        },
+        {
+          "name": "List Gas Lifts by well",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/gaslift/list/{{wellId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["gaslift", "list", "{{wellId}}"]
+            },
+            "description": "List unique gas lifts across all designs for a well"
+          },
+          "response": []
+        },
+        {
+          "name": "Import Gas Lifts by IDs",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"gasLifts\": [\n    \"550e8400-e29b-41d4-a716-446655440000\"\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/gaslift/import",
+              "host": ["{{baseUrl}}"],
+              "path": ["gaslift", "import"]
+            },
+            "description": "Fetch specific gas lifts by their IDs"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Casings",
+      "item": [
+        {
+          "name": "Get Casings",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/casings/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["casings", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch casing strings from EDM"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "PPFGSH",
+      "item": [
+        {
+          "name": "Get PP/FG/SH",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/ppfgsh/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["ppfgsh", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch and compose pore pressure, fracture gradient and shut-in height primary curves from EDM"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Active Revision Names",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/revisions/names/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["revisions", "names", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Fetch active PP/FG revision names"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Pore Pressure for Revision",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/pp/revision/{{revisionId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["pp", "revision", "{{revisionId}}"]
+            },
+            "description": "Fetch pore pressure data for a specific revision ID"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "CBD (Save All)",
+      "item": [
+        {
+          "name": "Save CBD Input Data",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"sois\": [],\n  \"gasLifts\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/cbd/save/{{wellId}}/{{wellboreId}}/{{designId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["cbd", "save", "{{wellId}}", "{{wellboreId}}", "{{designId}}"]
+            },
+            "description": "Sync all CBD input data (SOIs + gas lifts) in a single call"
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}

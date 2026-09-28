@@ -1,0 +1,14 @@
+$kind: http-request
+description: >-
+  Fetch available revision names for different curve types (pore pressure,
+  fracture gradient, horizontal stress). Used to populate the revision selector
+  UI.
+
+
+  Note: wellId and wellboreId are validated as 10-char strings; designId as
+  5-char string.
+url: "{{cbdBaseUrl}}/revisions/names/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 1000

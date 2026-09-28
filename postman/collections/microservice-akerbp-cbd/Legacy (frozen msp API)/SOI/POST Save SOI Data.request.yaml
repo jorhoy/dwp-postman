@@ -1,0 +1,48 @@
+$kind: http-request
+description: >-
+  Sync SOI data with the database for the given well/wellbore/design.
+
+
+  SoiObject fields:
+
+  - id (required): SOI ID
+
+  - name (required): SOI name
+
+  - tvd (required): True vertical depth
+
+  - soiPressureOverride (nullable): Pressure override
+
+  - soiBottom (nullable): SOI bottom depth
+
+  - hasBubblePoint (required): Has bubble point flag
+
+  - enabled (required): Enabled flag
+
+  - fluidDensity (required when hasBubblePoint=false)
+
+  - oilGradient, gasGradient, bubblePointPressure (required when
+  hasBubblePoint=true)
+url: "{{cbdBaseUrl}}/soi/save/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: POST
+headers:
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "sois": [
+        {
+          "id": "soi-id-1",
+          "name": "SOI Name",
+          "tvd": 1000.0,
+          "soiPressureOverride": null,
+          "soiBottom": null,
+          "hasBubblePoint": false,
+          "enabled": true,
+          "fluidDensity": 1.03
+        }
+      ]
+    }
+order: 4000

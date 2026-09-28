@@ -1,0 +1,19 @@
+name: AkerBP - Prod
+values:
+  - key: casingDesignBaseUrl
+    value: 'https://dsif.dazlmkabpprd06.ienergycloud.solutions/services/abp-quarkus-de-microservice-casing-design'
+  - key: cbdBaseUrl
+    value: 'https://dsif.dazlmkabpprd06.ienergycloud.solutions/services/microservice-akerbp-cbd/msp'
+  - key: authToken
+    value: ''
+  - key: wellId
+    value: NO 15/9-F-5
+  - key: wellboreId
+    value: NO 15/9-F-5
+  - key: designId
+    value: '00001'
+  - key: reportId
+    value: '00001'
+  - key: revisionId
+    value: '00001'
+color: 0

@@ -1,0 +1,49 @@
+$kind: http-request
+description: >-
+  Sync CBD (Critical Barrier Depth) data with the database — saves both SOI and
+  gas lift arrays in a single call.
+
+
+  GasLiftObject fields:
+
+  - id (required)
+
+  - name (required)
+
+  - fluidDensity (required)
+
+  - injectionPressure (required)
+
+  - enabled (required)
+url: "{{cbdBaseUrl}}/cbd/save/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: POST
+headers:
+  Authorization: Bearer {{authToken}}
+  Content-Type: application/json
+body:
+  type: json
+  content: |-
+    {
+      "sois": [
+        {
+          "id": "soi-id-1",
+          "name": "SOI Name",
+          "tvd": 1000.0,
+          "soiPressureOverride": null,
+          "soiBottom": null,
+          "hasBubblePoint": false,
+          "enabled": true,
+          "fluidDensity": 1.03
+        }
+      ],
+      "gasLifts": [
+        {
+          "id": "gaslift-id-1",
+          "name": "Gas Lift Name",
+          "fluidDensity": 0.85,
+          "injectionPressure": 250.0,
+          "enabled": true
+        }
+      ]
+    }
+order: 1000

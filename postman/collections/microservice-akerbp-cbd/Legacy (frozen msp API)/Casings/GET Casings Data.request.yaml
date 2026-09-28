@@ -1,0 +1,13 @@
+$kind: http-request
+description: >-
+  Fetch casings data for the given well/wellbore/design. Returns an array of
+  Casing objects with properties, MD/TVD values, and casing details.
+
+
+  Note: wellId and wellboreId are validated as 10-char strings; designId as
+  5-char string.
+url: "{{cbdBaseUrl}}/casings/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 1000

@@ -1,0 +1,8 @@
+$kind: http-request
+description: List all available SOIs for a specific wellId. Used to populate the
+  import selection UI.
+url: "{{cbdBaseUrl}}/soi/list/{{wellId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 2000

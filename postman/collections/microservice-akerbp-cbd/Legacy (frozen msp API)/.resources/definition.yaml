@@ -1,0 +1,5 @@
+$kind: collection
+description: >-
+  Frozen legacy endpoints on their unprefixed /msp paths, serving
+  akerbp-dwp-plugins. Not touched by the DSIS unit migration.
+order: 1000

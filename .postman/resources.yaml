@@ -1,0 +1,22 @@
+# Use this workspace to collaborate
+workspace:
+  id: 65a5b835-77ae-4360-9efe-321ff7c66084
+
+localResources:
+  collections:
+    - ../collections/microservice-akerbp-cbd.postman_collection.json
+    - ../collections/microservice-casing-design.postman_collection.json
+    - ../environments/Untitled-1.json
+  environments:
+    - ../environments/akerbp-localhost.postman_environment.json
+    - ../environments/akerbp-preprod.postman_environment.json
+    - ../environments/akerbp-tiger.postman_environment.json
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/microservice-akerbp-cbd: 52134964-33934338-2e68-4e27-8d56-12c8a93484e3
+  environments:
+    ../postman/environments/AkerBP - Pre-prod.environment.yaml: 52134964-5c86697b-e943-4b18-97a2-5d82dfa7888e
+    ../postman/environments/AkerBP - Localhost.environment.yaml: 52134964-ab82f97f-5b0f-45c0-80f2-0a18fec346ab

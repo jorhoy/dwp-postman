@@ -1,0 +1,7 @@
+$kind: http-request
+description: Fetch gas lift input data for a given well, wellbore, and design.
+url: "{{cbdBaseUrl}}/gaslift/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 1000

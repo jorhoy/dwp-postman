@@ -1,0 +1,13 @@
+$kind: http-request
+description: >-
+  Fetch data for the riser-margin plugin including trajectory points and water
+  depth.
+
+
+  Note: wellId and wellboreId are validated as 10-char strings; designId as
+  5-char string.
+url: "{{cbdBaseUrl}}/riser-margin/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 1000

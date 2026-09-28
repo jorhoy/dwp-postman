@@ -1,0 +1,10 @@
+$kind: http-request
+name: SAVE SOI
+description: Fetch SOI (Stress of Interest) input data for a given well,
+  wellbore, and design.
+url: "{{cbdBaseUrl}}/soi/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: GET
+headers:
+  - key: Authorization
+    value: Bearer {{authToken}}
+order: 1000

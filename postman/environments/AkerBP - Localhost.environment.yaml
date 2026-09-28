@@ -1,0 +1,42 @@
+name: AkerBP - Localhost
+values:
+  - key: casingDesignBaseUrl
+    value: http://localhost:8080
+    enabled: true
+  - key: cbdBaseUrl
+    value: http://localhost:8080/msp
+    enabled: true
+  - key: authToken
+    value: ""
+    enabled: true
+  - key: wellId
+    value: NO 15/9-F-5
+    enabled: true
+  - key: wellboreId
+    value: NO 15/9-F-5
+    enabled: true
+  - key: designId
+    value: "00001"
+    enabled: true
+  - key: holeSectionId
+    value: "00001"
+    enabled: true
+  - key: reportId
+    value: "00001"
+    enabled: true
+  - key: revisionId
+    value: "00001"
+    enabled: true
+  - key: keycloakBaseUrl
+    value: https://dssecurity.dsif.dazlmkabpprd06.ienergycloud.solutions/auth
+    enabled: true
+  - key: keycloakClientId
+    value: dsis-console
+    enabled: true
+  - key: dsisUsername
+    value: ""
+    enabled: true
+  - key: dsisPassword
+    value: ""
+    enabled: true
+color: null

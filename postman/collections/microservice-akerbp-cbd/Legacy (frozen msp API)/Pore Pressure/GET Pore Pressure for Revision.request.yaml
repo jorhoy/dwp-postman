@@ -1,0 +1,9 @@
+$kind: http-request
+description: Fetch pore pressure data for a specific revision. Returns revision
+  data including curve points and metadata. Use the GET Active Revision Names
+  endpoint to find available revisionIds.
+url: "{{cbdBaseUrl}}/pp/revision/{{revisionId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 1000

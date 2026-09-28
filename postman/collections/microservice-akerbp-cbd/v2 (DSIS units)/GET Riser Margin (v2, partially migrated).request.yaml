@@ -1,0 +1,25 @@
+$kind: http-request
+description: >-
+  Partially migrated: embedded pp/fg curves are DSIS-resolved (via
+  pressure-curves-service); waterDepth/riserLength/casingShoes are not yet.
+  No top-level unitSystem/units block until the rest migrates.
+url: "{{cbdBaseUrl}}/v2/riser-margin/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 2000
+scripts:
+  test:
+    - "pm.test('Status is 200', () => pm.response.to.have.status(200));"
+    - ""
+    - "const json = pm.response.json();"
+    - ""
+    - "pm.test('edm.pp and edm.fg are present (pressure-curves migrated internally)', () => {"
+    - "    pm.expect(json).to.have.nested.property('edm.pp');"
+    - "    pm.expect(json).to.have.nested.property('edm.fg');"
+    - "});"
+    - ""
+    - "pm.test('edm.waterDepth and edm.riserLength are still plain metric numbers (not migrated yet)', () => {"
+    - "    pm.expect(json.edm).to.have.property('waterDepth').that.is.a('number');"
+    - "    pm.expect(json.edm).to.have.property('riserLength').that.is.a('number');"
+    - "});"

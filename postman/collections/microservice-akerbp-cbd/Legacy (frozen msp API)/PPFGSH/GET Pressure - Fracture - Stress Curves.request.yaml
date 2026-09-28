@@ -1,0 +1,15 @@
+$kind: http-request
+name: GET Pressure / Fracture / Stress Curves
+description: >-
+  Fetch and compose pore pressure (PP), fracture gradient (FG), and horizontal
+  stress (SH) curves from EDM. Returns active revision information alongside the
+  curve data.
+
+
+  Note: wellId and wellboreId are validated as 10-char strings; designId as
+  5-char string.
+url: "{{cbdBaseUrl}}/ppfgsh/{{wellId}}/{{wellboreId}}/{{designId}}"
+method: GET
+headers:
+  Authorization: Bearer {{authToken}}
+order: 1000

@@ -1,0 +1,8 @@
+$kind: collection
+description: >-
+  DSIS-catalogue-driven unit handling, migrated off the legacy
+  depthUnit/pressureUnit/mudWeightUnit query params (ADO 204160). See
+  plans/plugin-unit-system-plan.md (akerbp-dwp-web-components, branch
+  abp350-plugins-unit-conversion). More endpoints (casing-shoes, trajectory)
+  land here as they migrate.
+order: 2000

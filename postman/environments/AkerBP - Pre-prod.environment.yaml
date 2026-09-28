@@ -1,0 +1,39 @@
+name: AkerBP - Pre-prod
+values:
+  - key: casingDesignBaseUrl
+    value: https://dsif.dazlmkabpprd06.ienergycloud.solutions/services/abp-quarkus-de-microservice-casing-design
+    enabled: true
+  - key: cbdBaseUrl
+    value: https://dsif.dazlmkabpprd06.ienergycloud.solutions/services/microservice-akerbp-cbd/msp
+    enabled: true
+  - key: authToken
+    value: ""
+    enabled: true
+  - key: wellId
+    value: NO 15/9-F-5
+    enabled: true
+  - key: wellboreId
+    value: NO 15/9-F-5
+    enabled: true
+  - key: designId
+    value: "00001"
+    enabled: true
+  - key: reportId
+    value: "00001"
+    enabled: true
+  - key: revisionId
+    value: "00001"
+    enabled: true
+  - key: keycloakBaseUrl
+    value: https://dssecurity.dsif.dazlmkabpprd06.ienergycloud.solutions/auth
+    enabled: true
+  - key: keycloakClientId
+    value: dsis-console
+    enabled: true
+  - key: dsisUsername
+    value: ""
+    enabled: true
+  - key: dsisPassword
+    value: ""
+    enabled: true
+color: null
